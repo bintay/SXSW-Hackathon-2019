@@ -39,16 +39,28 @@ def get_similar_songs(wavURL, compareDirectoryPopular, compareDirectoryUsers):
 
     print(sorted_popular_similar_songs)
 
-    top5IDs = []
-    for i in range (0, 5):
-        top5IDs.append(sorted_popular_similar_songs[i][0])
+    sum = 0
+    top3IDs = []
+    for i in range (0, 3):
+        top3IDs.append(sorted_popular_similar_songs[i][0])
+        sum = sum + sorted_popular_similar_songs[i][1]
+    average_overall_score = sum / 3
+    scaled_score = 10 * (average_overall_score/0.04)
+    if (scaled_score > 10):
+        scaled_score = 10
+    if (scaled_score < 1):
+        scaled_score = 1
+    result = [top3IDs, scaled_score]
+
     '''
     #maps top similar songs that have been uploaded to similarity scores
     top_collab_songs = {}
     '''
     #remove the input file from the input directory
     os.remove("input_file.wav")
-    return top5IDs
+
+    return result
+    
     
 def get_similar_songs_testing():
     
