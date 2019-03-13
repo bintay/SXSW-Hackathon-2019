@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-   <title>SXSWHack</title>
+   <title>Working In Concert</title>
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <meta charset="utf8">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
@@ -14,8 +14,8 @@
       <div class="hero is-danger is-bold">
          <div class="hero-body">
             <div class="container">
-               <h1 class="title has-text-centered">SXSWHack 2019</h1>
-               <h2 class="subtitle has-text-centered">Bringing the future to music</h2>
+               <h1 class="title has-text-centered">Working In Concert</h1>
+               <h2 class="subtitle has-text-centered">Improving international marketing and inspiring global collaboration in music</h2>
             </div>
          </div>
       </div>
@@ -25,7 +25,7 @@
          <div class="container">
             <div class="column is-4 is-center">
                <h2 class="title">Step One</h2>
-               <h3 class="subtitle">Upload an audio file of your music</h3>
+               <h3 class="subtitle">Upload an audio file of your music 🎸</h3>
                <div class="form">
                   <label for="name" class="label">Name</label>
                   <input :bind='form.name' class="input" type="text" placeholder="Name" id="name" name="name"><br><br>
@@ -54,7 +54,7 @@
          <div class="container">
             <div class="column is-4 is-center">
                <h2 class="title">Step Two</h2>
-               <h3 class="subtitle">Give us some time, our robots are analyzing your music</h3>
+               <h3 class="subtitle">Give us some time, our robots are analyzing your music 🤖</h3>
                <div class="wave-loader">
                   <div class="bar"></div>
                   <div class="bar"></div>
@@ -71,7 +71,7 @@
          <div class="container">
             <div class="column is-4 is-center">
                <h2 class="title">Step Three</h2>
-               <h3 class="subtitle">Here's what we think you can do to improve your chance at success</h3>
+               <h3 class="subtitle">Here's what we think you can do to improve your chance at success 📈</h3>
                <h3 class='subtitle has-text-centered'>You scored a</h3>
                <h2 class='is-size-0 has-text-danger has-text-centered'>{{ Math.floor(feedback.score * 100) / 10 }}</h2>
                <h3 class='subtitle'>That's pretty impressive, {{ form.name  }}! Based on similar how similar songs perform, we think you should focus on {{ feedback.tips.length == 1 ? feedback.tips[0] : feedback.tips.slice(0, feedback.tips.length - 1).join(', ') + ' and ' + feedback.tips[feedback.tips.length - 1] }}.</h3>
@@ -83,7 +83,7 @@
          <div class="container">
             <div class="column is-4 is-center">
                <h2 class="title">Step Four</h2>
-               <h3 class="subtitle">Try collaborating with people across the world — these people produce music similar to yours</h3>
+               <h3 class="subtitle">Try collaborating with people across the world — these people produce music similar to yours 🌍</h3>
             </div>
             <br>
             <div class="horizontal-container">
@@ -166,8 +166,8 @@
       app = new Vue({
          el: "#app",
          data: {
-            step: 4,
-            talking: true,
+            step: 1,
+            talking: false,
             messages: [],
             feedback: {
                score: null,
@@ -189,6 +189,12 @@
                   image: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0OTkwNDUxOTQ5MDUzNDQ3/kanye-west-attends-the-christian-dior-show-as-part-of-the-paris-fashion-week-womenswear-fall-winter-2015-2016-on-march-6-2015-in-paris-france-photo-by-dominique-charriau-wireimage-square.jpg",
                   name: "Kanye West",
                   flag: "🇺🇸",
+                  bio: "I'm a Grammy Award-winning rapper and record producer and fashion designer. Outspoken and prone to controversy, I became additional celebrity fodder with his marriage to Kim Kardashian."
+               },
+               {
+                  image: "https://pbs.twimg.com/profile_images/378800000046152964/30d4426afcd80ed657c6aa9723013a2a_400x400.jpeg",
+                  name: "Sophia Keathly",
+                  flag: "🇫🇷",
                   bio: "I'm a Grammy Award-winning rapper and record producer and fashion designer. Outspoken and prone to controversy, I became additional celebrity fodder with his marriage to Kim Kardashian."
                }
             ]

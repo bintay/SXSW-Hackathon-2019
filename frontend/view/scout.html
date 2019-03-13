@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Working In Concert</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta charset="utf8">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+   <link rel="stylesheet" href="/public/main.css">
+   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+   <header class="header">
+      <div class="hero is-danger is-bold">
+         <div class="hero-body">
+            <div class="container">
+               <h1 class="title has-text-centered">Working In Concert</h1>
+               <h2 class="subtitle has-text-centered">Improving international marketing and inspiring global collaboration in music</h2>
+            </div>
+         </div>
+      </div>
+   </header>
+   <div id="app">
+      <div class="container">
+         <br>
+         <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
+               <tr>
+                  <th>Name</th>
+                  <th>Collaboration Score</th>
+                  <th>Music Score</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr v-for='user in users.sort((a, b) => { return a.score - b.score; })'>
+                  <td>{{ user['Band Name'] }}</td>
+                  <td>{{ user.collaboration }}</td>
+                  <td>{{ Math.floor(user.Score * 100) / 10 }}</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="dsplay: none"></iframe>
+   <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+   <script src="/public/socket.io.js"></script>
+   <script>
+      var app;
+
+      app = new Vue({
+         el: "#app",
+         data: {
+            users: []
+         },
+         methods: {
+            
+         },
+         created: function () {
+            let vueThis = this;
+            $.ajax({
+               url: 'http://localhost:10051/infojson',
+               method: 'GET',
+               success: function (data) {
+                  console.log(data);
+                  data = JSON.parse(data);
+                  for (let i = 0; i < data.length; ++i) {
+                     data[i].collaboration = Math.floor(Math.random() * 100) / 10;
+                     vueThis.users.push(data[i]);
+                  }
+               }
+            })
+         }
+      })
+   </script>
+</body>
+</html>

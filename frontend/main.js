@@ -12,6 +12,7 @@ var expressFile = require('express-fileupload');
 const uuid = require('uuid/v1');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+const request = require('request');
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,6 +24,10 @@ app.get('/', function (req, res) {
 
 app.get('/message', function (req, res) {
    res.sendFile(__dirname + '/view/message.html');
+});
+
+app.get('/scout', function (req, res) {
+   res.sendFile(__dirname + '/view/scout.html');
 });
 
 app.post('/submit/:name/:email/', type, function (req, res) {
@@ -37,6 +42,10 @@ app.post('/submit/:name/:email/', type, function (req, res) {
          return res.status(500).send(err);
       } else {
          getFeedback (name, function (tips, score) {
+            request.post(`http://localhost:10051/issue-video?identifier=${req.params.name}&similarityScore=${score}`).on('response', function (response) {
+               // pass
+            });
+
             res.json({
                score: score,
                tips: tips

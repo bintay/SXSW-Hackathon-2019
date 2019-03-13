@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.template.IssueVideoFlow;
 import com.template.VideoState;
@@ -46,6 +47,7 @@ public class Controller {
         return proxy.nodeInfo().getLegalIdentities().get(0).toString();
     }
     
+    @CrossOrigin(origins = "http://localhost:5678")
     @PostMapping(path = "issue-video", produces = "text/plain")
     private ResponseEntity<String> issueAsset(HttpServletRequest request) throws ExecutionException, InterruptedException {
         String identifier = request.getParameter("identifier");
@@ -56,6 +58,7 @@ public class Controller {
         return ResponseEntity.status(HttpStatus.CREATED).body("Video issued.\n");
     }
     
+    @CrossOrigin(origins = "http://localhost:5678")
     @GetMapping(value = "infojson", produces = "text/plain")
     private String infojson() {
         List<StateAndRef<VideoState>> states = proxy.vaultQuery(VideoState.class).getStates();
