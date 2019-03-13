@@ -52,3 +52,74 @@
 .profile-description {
    padding: 10px 0;
 }
+
+.wave-loader {
+   margin: 150px auto;
+   width: 140px;
+   height: 100px;
+}
+
+.wave-loader .bar {
+   background: #ff3860;
+   height: 100px;
+   width: 10px;
+   margin: 5px;
+   float: left;
+   animation: wave-bounce 1s infinite;
+}
+
+.wave-loader .bar:nth-child(1) {
+   animation-delay: -0.35s;
+}
+
+.wave-loader .bar:nth-child(2) {
+   animation-delay: -0.7s;
+}
+
+.wave-loader .bar:nth-child(3) {
+   animation-delay: -0.45s;
+}
+
+.wave-loader .bar:nth-child(4) {
+   animation-delay: -0.9s;
+}
+
+.wave-loader .bar:nth-child(5) {
+   animation-delay: -0.2s;
+}
+
+.wave-loader .bar:nth-child(6) {
+   animation-delay: -0.5s;
+}
+
+.wave-loader .bar:nth-child(7) {
+   animation-delay: -0.8s;
+}
+
+.is-size-0 {
+   font-size: 6em;
+   line-height: 0.5em;
+}
+
+@keyframes wave-bounce {
+   0% {
+      margin-top: 0;
+      height: 100px;
+   }
+   50% {
+      margin-top: 40px;
+      height: 20px;
+   }
+   70% {
+      margin-top: 10px;
+      height: 80px;
+   }
+   80% {
+      margin-top: 15px;
+      height: 70px;
+   }
+   100% {
+      margin-top: 0;
+      height: 100px;
+   }
+}
