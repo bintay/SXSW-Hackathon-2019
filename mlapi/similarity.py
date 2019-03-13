@@ -39,12 +39,17 @@ def get_similar_songs(wavURL, compareDirectoryPopular, compareDirectoryUsers):
 
     print(sorted_popular_similar_songs)
 
+    top5IDs = []
+    for i in range (0, 5):
+        top5IDs.append(sorted_popular_similar_songs[i][0])
+    '''
     #maps top similar songs that have been uploaded to similarity scores
     top_collab_songs = {}
-
+    '''
     #remove the input file from the input directory
     os.remove("input_file.wav")
-
+    return top5IDs
+    
 def get_similar_songs_testing():
     
     os.system("javac fingerprint.java")
