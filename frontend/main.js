@@ -14,6 +14,12 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 const request = require('request');
 
+app.all('/public/uploads/:file/', function(req, res, next) {
+   res.header("Access-Control-Allow-Origin", "*");
+   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+   next();
+});
+
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressFile());
@@ -42,9 +48,12 @@ app.post('/submit/:name/:email/', type, function (req, res) {
          return res.status(500).send(err);
       } else {
          getFeedback (name, function (tips, score) {
+            console.log();
             request.post(`http://localhost:10051/issue-video?identifier=${req.params.name}&similarityScore=${score}`).on('response', function (response) {
                // pass
             });
+
+            console.log(score);
 
             res.json({
                score: score,
@@ -96,7 +105,13 @@ function getTranslation (sentence, language, callback) {
 }
 
 function getFeedback (fileurl, callback) {
-   setTimeout(() => {
-      callback(["marketing on Spotify in Mexico"], Math.random());
-   }, 2000)
+   request.post(`http://localhost:5000/http://localhost:5678/public/uploads/${fileurl}`, {}, function (error, response, body) {
+      if (error) console.log(error);
+      console.log(body);
+      body = JSON.parse(body);
+      let result = {};
+      result.score = body[1];
+      result.tips = ['market on Spotify in Mexico'];
+      callback(result.tips, result.score * 0.973);
+   });
 }

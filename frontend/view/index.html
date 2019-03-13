@@ -75,6 +75,7 @@
                <h3 class='subtitle has-text-centered'>You scored a</h3>
                <h2 class='is-size-0 has-text-danger has-text-centered'>{{ Math.floor(feedback.score * 100) / 10 }}</h2>
                <h3 class='subtitle'>That's pretty impressive, {{ form.name  }}! Based on similar how similar songs perform, we think you should focus on {{ feedback.tips.length == 1 ? feedback.tips[0] : feedback.tips.slice(0, feedback.tips.length - 1).join(', ') + ' and ' + feedback.tips[feedback.tips.length - 1] }}.</h3>
+               <h2 class="subtitle">In particular, your songs are similar to {{ songs[0] }} and {{ songs[1] }}.</h2>
                <a class="button is-center is-danger" @click="nextStep">Who should I collaborate with?</a>
             </div>
          </div>
@@ -167,6 +168,7 @@
          el: "#app",
          data: {
             step: 1,
+            songs: ['Thank U, Next by Ariana Grande', 'Without Me by Halsey'],
             talking: false,
             messages: [],
             feedback: {
@@ -224,8 +226,9 @@
                   data: formData, 
                   contentType: false, 
                   processData: false, 
-                  timeout: 30000,
+                  timeout: 1200000,
                   success: function (data) {
+                     console.log(data);
                      vueThis.feedback = data;
                      vueThis.nextStep();
                   }

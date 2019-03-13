@@ -4,10 +4,14 @@ import os
 import operator
 import json
 from flask import Flask
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/<path:wavURL>')
+@cross_origin()
+@app.route('/<path:wavURL>', methods=["POST"])
 def get_similar_songs(wavURL):
     
     #directory store store popular songs
@@ -25,14 +29,14 @@ def get_similar_songs(wavURL):
     popular_similar_songs = {}
 
     #download all of the popular songs
-    for i in range (1,41):
-        print(i)
+    for i in range (1,9):
+        # print(i)
         popular_song_id = "/audio" + str(i)
         popular_song_path = directory + "/popular_file" + str(i) + ".wav"
-        with open (popular_song_path, "wb") as file2:
-            #response = requests.get(compareDirectoryPopular + popular_song_id)
-            response = requests.get(wavURL)
-            file2.write(response.content)
+        # with open (popular_song_path, "wb") as file2:
+        #     response = requests.get(compareDirectoryPopular + popular_song_id)
+        #     #response = requests.get(wavURL)
+        #     file2.write(response.content)
         #run 
         os.system("javac fingerprint.java")
         os.system("java fingerprint input_file.wav " + popular_song_path)
@@ -63,22 +67,22 @@ def get_similar_songs(wavURL):
     '''
     #remove the input file from the input directory
     os.remove("input_file.wav")
-
+    print(popular_similar_songs);
     return json.dumps(result)
     
     
-def get_similar_songs_testing():
+# def get_similar_songs_testing():
     
-    os.system("javac fingerprint.java")
-    os.system("java fingerprint input_file_1.wav input_file_2.wav")
-    #os.system("java fingerprint bank_account_original.wav bank_account_remix.wav")
-    #os.system("java fingerprint input_file_1.wav input_file_2.wav")
-    file_score = open("similarity_score.txt", "r")
-    similarity_score = float(file_score.read())
-    print(similarity_score)
+#     os.system("javac fingerprint.java")
+#     os.system("java fingerprint input_file_1.wav input_file_2.wav")
+#     #os.system("java fingerprint bank_account_original.wav bank_account_remix.wav")
+#     #os.system("java fingerprint input_file_1.wav input_file_2.wav")
+#     file_score = open("similarity_score.txt", "r")
+#     similarity_score = float(file_score.read())
+#     print(similarity_score)
 
 
-get_similar_songs_testing()
+# get_similar_songs_testing()
 
 if  __name__ == '__main__':
     app.run(debug=True)

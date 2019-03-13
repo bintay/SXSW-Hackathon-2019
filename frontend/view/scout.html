@@ -29,6 +29,9 @@
                   <th>Name</th>
                   <th>Collaboration Score</th>
                   <th>Music Score</th>
+                  <th>Listen</th>
+                  <th>Invite to Office</th>
+                  <th>Ignore User</th>
                </tr>
             </thead>
             <tbody>
@@ -36,6 +39,9 @@
                   <td>{{ user['Band Name'] }}</td>
                   <td>{{ user.collaboration }}</td>
                   <td>{{ Math.floor(user.Score * 100) / 10 }}</td>
+                  <td><a class="button is-link">Play</a></td>
+                  <td><a class="button is-success">Send Email</a></td>
+                  <td><a class="button is-danger">Ignore</a></td>
                </tr>
             </tbody>
          </table>
