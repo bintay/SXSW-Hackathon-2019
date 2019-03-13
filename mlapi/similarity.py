@@ -2,8 +2,13 @@ import requests
 from scipy.io import wavfile
 import os
 import operator
+import json
+from flask import Flask
 
-def get_similar_songs(wavURL, compareDirectoryPopular, compareDirectoryUsers):
+app = Flask(__name__)
+
+@app.route('/<path:wavURL>')
+def get_similar_songs(wavURL):
     
     #directory store store popular songs
     directory = "popular_songs_dir"
@@ -59,13 +64,13 @@ def get_similar_songs(wavURL, compareDirectoryPopular, compareDirectoryUsers):
     #remove the input file from the input directory
     os.remove("input_file.wav")
 
-    return result
+    return json.dumps(result)
     
     
 def get_similar_songs_testing():
     
     os.system("javac fingerprint.java")
-    os.system("java fingerprint prelude_segev.wav prelude_yoyoma.wav")
+    os.system("java fingerprint input_file_1.wav input_file_2.wav")
     #os.system("java fingerprint bank_account_original.wav bank_account_remix.wav")
     #os.system("java fingerprint input_file_1.wav input_file_2.wav")
     file_score = open("similarity_score.txt", "r")
@@ -74,5 +79,8 @@ def get_similar_songs_testing():
 
 
 get_similar_songs_testing()
+
+if  __name__ == '__main__':
+    app.run(debug=True)
 
 #get_similar_songs("http://www.kozco.com/tech/c304-2.wav", " ", " ")
