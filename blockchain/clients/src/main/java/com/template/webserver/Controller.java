@@ -45,7 +45,7 @@ public class Controller {
             VideoState Video = stateAndRef.getState().getData();
 
             HashMap<String, String> map = new HashMap<>();
-            map.put("Band Name", Video.getIdentifier());
+            map.put("Band_Name", Video.getIdentifier());
             map.put("Score", String.valueOf(Video.getScore()));
 
             return map;
@@ -53,10 +53,10 @@ public class Controller {
         String end = "[\n\t";
         if (info.size() > 0) {
         		for (int x = 0; x < info.size()-1; x++) {
-        			end += "{\n\t\t\"Band Name\": \"" + info.get(x).get("Band Name") + "\",\n";
+        			end += "{\n\t\t\"Band_Name\": \"" + info.get(x).get("Band Name") + "\",\n";
       	 		end += "\t\t\"Score\": " + info.get(x).get("Score") + "\n\t},";
         		}
-        		end += "\n\t{\n\t\t\"Band Name\": \"" + info.get(info.size()-1).get("Band Name") + "\",\n";
+        		end += "\n\t{\n\t\t\"Band_Name\": \"" + info.get(info.size()-1).get("Band Name") + "\",\n";
       	 	end += "\t\t\"Score\": " + info.get(info.size()-1).get("Score") + "\n\t}";
         }
         end+= "\n]";
