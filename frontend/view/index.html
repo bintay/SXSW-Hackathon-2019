@@ -21,54 +21,66 @@
       </div>
    </header>
    <div id="app">
-      <section class="section">
+      <section class="section" v-if="step == 1">
          <div class="container">
             <div class="column is-4 is-center">
                <h2 class="title">Step One</h2>
                <h3 class="subtitle">Upload an audio file of your music</h3>
-               <form action="/submit/" method="POST" encType="multipart/form-data">
+               <div class="form">
                   <label for="name" class="label">Name</label>
-                  <input class="input" type="text" placeholder="Name" id="name" name="name"><br><br>
+                  <input :bind='form.name' class="input" type="text" placeholder="Name" id="name" name="name"><br><br>
                   <label for="email" class="label">Email</label>
-                  <input class="input" type="email" placeholder="email@example.com" id="email" name="email"><br><br>
+                  <input :bind='form.email' class="input" type="email" placeholder="email@example.com" id="email" name="email"><br><br>
                   <div class="file is-boxed is-fullwidth">
                      <label class="file-label">
-                        <input class="file-input" type="file" name="file" id="file">
+                        <input class="file-input" type="file" name="file" id="file" @change="selectedFile">
                         <span class="file-cta">
                            <span class="file-icon">
                               <i class="fas fa-upload"></i>
                            </span>
                            <span class="file-label has-text-centered">
-                              Choose a file…
+                              {{ form.fileValue ? form.fileValue : "Choose a file..." }}
                            </span>
                         </span>
                      </label>
                   </div>
                   <br>
-                  <input type='submit' class="button is-danger is-fullwidth" value="Get Feedback">
-               </form>
+                  <button class="button is-danger is-fullwidth" @click='submit'>Get Feedback</button>
+               </div>
             </div>
          </div>
       </section>
-      <section class="section">
+      <section class="section" v-if="step == 2">
          <div class="container">
-            <div class="column is-4 is-center">
+            <div class="column is-6 is-center">
                <h2 class="title">Step Two</h2>
-               <h3 class="subtitle">Give us some time, we're listening to specific instruments and comparing them with over eighty thousand songs to bring you marketing tips and collaboration suggestions</h3>
+               <h3 class="subtitle">Give us some time, our robots are analyzing your music</h3>
+               <div class="wave-loader">
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+                  <div class="bar"></div>
+               </div>
             </div>
          </div>
       </section>
-      <section class="section">
+      <section class="section" v-if="step == 3">
          <div class="container">
-            <div class="column is-4 is-center">
+            <div class="column is-6 is-center">
                <h2 class="title">Step Three</h2>
-               <h3 class="subtitle">Here are your suggested strategies and markets</h3>
+               <h3 class="subtitle">Here's what we think you can do to improve your chance at success</h3>
+               <h3 class='subtitle'>You scored a</h3>
+               <h2 class='is-size-0 has-text-danger has-text-centered'>{{ Math.floor(feedback.score * 100) / 10 }} <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10!</h2><br>
+               <h3 class='subtitle'>That's pretty impressive! Based on similar how similar songs perform, we think you should focus on {{ feedback.tips.length == 1 ? feedback.tips[0] : feedback.tips.slice(0, feedback.tips.length - 1).join(', ') + ' and ' + feedback.tips[feedback.tips.length - 1] }}.</h3>
             </div>
          </div>
       </section>
-      <section class="section">
+      <section class="section" v-if="step == 4">
          <div class="container">
-            <div class="column is-4 is-center">
+            <div class="column is-6 is-center">
                <h2 class="title">Step Four</h2>
                <h3 class="subtitle">Try collaborating with people across the world — these people produce music similar to yours</h3>
             </div>
@@ -78,7 +90,7 @@
                   <div class="card user" v-for="user in recommendedUsers">
                      <div class="card-content">
                         <p class="title">
-                           <img :src=user.image class='profile-icon'> {{ user.name }} {{ user.flag }}
+                           <img :src=user.image class="profile-icon"> {{ user.name }} {{ user.flag }}
                         </p>
                         <p class="subtitle profile-description">
                            {{ user.bio }}
@@ -97,7 +109,7 @@
                         </p>
                      </footer>
                   </div>
-                  <h2 class="title"><br><br><br><br>That's all we have for now!</h2>
+                  <h2 class="title"><br><br><br><br>That's all we have for you right now!</h2>
                </div>
             </div>
             <div class="fade-overlay-left"></div>
@@ -105,10 +117,25 @@
          </div>
       </section>
    </div>
+   <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="dsplay: none"></iframe>
+   <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
    <script>
       var app = new Vue({
-         el: '#app',
+         el: "#app",
          data: {
+            step: 1,
+            feedback: {
+               score: null,
+               tips: []
+            },
+            form: {
+               name: '',
+               email: '',
+               fileValue: null
+            },
             recommendedUsers: [
                {
                   image: "https://zblogged.com/wp-content/uploads/2015/11/5.png",
@@ -119,14 +146,43 @@
                {
                   image: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0OTkwNDUxOTQ5MDUzNDQ3/kanye-west-attends-the-christian-dior-show-as-part-of-the-paris-fashion-week-womenswear-fall-winter-2015-2016-on-march-6-2015-in-paris-france-photo-by-dominique-charriau-wireimage-square.jpg",
                   name: "Kanye West",
-                  flag: "🇯🇵",
+                  flag: "🇺🇸",
                   bio: "I'm a Grammy Award-winning rapper and record producer and fashion designer. Outspoken and prone to controversy, I became additional celebrity fodder with his marriage to Kim Kardashian."
                }
             ]
          },
          methods: {
-            
-         }
+            nextStep: function () {
+               let vueThis = this;
+               $("#app").fadeOut(null, function () {
+                  ++vueThis.step;
+                  setTimeout(() => {
+                     $("#app").fadeIn();
+                  }, 100)
+               });
+            },
+            selectedFile: function (e) {
+               this.form.fileValue = e.srcElement.value.substring(12);
+            },
+            submit: function () {
+               let vueThis = this;
+               let formData = new FormData();
+               formData.append('file', $('input[type=file]')[0].files[0]);
+               $.ajax({
+                  url: 'http://localhost:5678/submit/' + $('#name').val() + '/' + $('#email').val() + '/',
+                  type: 'POST', 
+                  data: formData, 
+                  contentType: false, 
+                  processData: false, 
+                  timeout: 30000,
+                  success: function (data) {
+                     vueThis.feedback = data;
+                     vueThis.nextStep();
+                  }
+               })
+               this.nextStep();
+            }
+         },
       })
    </script>
 </body>
