@@ -1,5 +1,6 @@
 .is-center {
    margin: 0 auto;
+   display: block;
 }
 
 .card.user {
@@ -97,8 +98,14 @@
 }
 
 .is-size-0 {
-   font-size: 6em;
-   line-height: 0.5em;
+   margin-top: -65px;
+   font-size: 8em;
+}
+
+.messages {
+   height: 70vh;
+   overflow: scroll;
+   padding: 10px;
 }
 
 @keyframes wave-bounce {

@@ -52,7 +52,7 @@
       </section>
       <section class="section" v-if="step == 2">
          <div class="container">
-            <div class="column is-6 is-center">
+            <div class="column is-4 is-center">
                <h2 class="title">Step Two</h2>
                <h3 class="subtitle">Give us some time, our robots are analyzing your music</h3>
                <div class="wave-loader">
@@ -69,18 +69,19 @@
       </section>
       <section class="section" v-if="step == 3">
          <div class="container">
-            <div class="column is-6 is-center">
+            <div class="column is-4 is-center">
                <h2 class="title">Step Three</h2>
                <h3 class="subtitle">Here's what we think you can do to improve your chance at success</h3>
-               <h3 class='subtitle'>You scored a</h3>
-               <h2 class='is-size-0 has-text-danger has-text-centered'>{{ Math.floor(feedback.score * 100) / 10 }} <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10!</h2><br>
-               <h3 class='subtitle'>That's pretty impressive! Based on similar how similar songs perform, we think you should focus on {{ feedback.tips.length == 1 ? feedback.tips[0] : feedback.tips.slice(0, feedback.tips.length - 1).join(', ') + ' and ' + feedback.tips[feedback.tips.length - 1] }}.</h3>
+               <h3 class='subtitle has-text-centered'>You scored a</h3>
+               <h2 class='is-size-0 has-text-danger has-text-centered'>{{ Math.floor(feedback.score * 100) / 10 }}</h2>
+               <h3 class='subtitle'>That's pretty impressive, {{ form.name  }}! Based on similar how similar songs perform, we think you should focus on {{ feedback.tips.length == 1 ? feedback.tips[0] : feedback.tips.slice(0, feedback.tips.length - 1).join(', ') + ' and ' + feedback.tips[feedback.tips.length - 1] }}.</h3>
+               <a class="button is-center is-danger" @click="nextStep">Who should I collaborate with?</a>
             </div>
          </div>
       </section>
       <section class="section" v-if="step == 4">
          <div class="container">
-            <div class="column is-6 is-center">
+            <div class="column is-4 is-center">
                <h2 class="title">Step Four</h2>
                <h3 class="subtitle">Try collaborating with people across the world — these people produce music similar to yours</h3>
             </div>
@@ -99,7 +100,7 @@
                      <footer class="card-footer">
                         <p class="card-footer-item">
                            <span>
-                              Send a <a href="#">message</a>
+                              Send a <a href="#" @click='toggleModal'>message</a>
                            </span>
                         </p>
                         <p class="card-footer-item">
@@ -116,23 +117,64 @@
             <div class="fade-overlay-right"></div>
          </div>
       </section>
+      <div class="modal" v-if='talking' style='display: block'>
+        <div class="modal-background" @click='toggleModal'></div>
+        <div class="modal-content">
+            <br><br><br>
+            <div class="box">
+               <div class="messages">
+                  <div class="box" v-for='message in messages'>
+                     <h2 class="title is-size-5"><img v-bind:src="'https://avatar-api.org/avatar.svg?size=30&name=' + message.name"><span style='position: relative; top: -7px'>  {{ message.name }}</span></h2>
+                     <p class="subtitle is-size-6">{{ message.message }}</p>
+                  </div>
+               </div>
+            <br>
+            <div class="send">
+               <div class="field has-addons send">
+                  <div class="control is-expanded">
+                     <input class="input" id='message' type="text" placeholder="Collaborate here">
+                  </div>
+                  <div class="control">
+                     <a class="button is-danger" @click='send'>
+                        Send
+                     </a>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+        <button class="modal-close is-large" aria-label="close" @click='toggleModal'></button>
+      </div>
    </div>
    <iframe width="0" height="0" border="0" name="dummyframe" id="dummyframe" style="dsplay: none"></iframe>
    <script
       src="https://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
       crossorigin="anonymous"></script>
+   <script src="/public/socket.io.js"></script>
    <script>
-      var app = new Vue({
+      var app;
+
+      socket = io('http://localhost:5678/');
+      
+      socket.on('toUser', function (data) {
+         data = JSON.parse(data);
+         data.message = data.message.data.translations[0].translatedText;
+         app.$data.messages.push(data);
+      });
+
+      app = new Vue({
          el: "#app",
          data: {
-            step: 1,
+            step: 4,
+            talking: true,
+            messages: [],
             feedback: {
                score: null,
                tips: []
             },
             form: {
-               name: '',
+               name: 'Bob',
                email: '',
                fileValue: null
             },
@@ -140,7 +182,7 @@
                {
                   image: "https://zblogged.com/wp-content/uploads/2015/11/5.png",
                   name: "George Levine",
-                  flag: "🇯🇵",
+                  flag: "🇲🇽",
                   bio: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible."
                },
                {
@@ -168,6 +210,8 @@
                let vueThis = this;
                let formData = new FormData();
                formData.append('file', $('input[type=file]')[0].files[0]);
+               this.form.name = $('#name').val();
+               this.form.email = $('#email').val();
                $.ajax({
                   url: 'http://localhost:5678/submit/' + $('#name').val() + '/' + $('#email').val() + '/',
                   type: 'POST', 
@@ -181,6 +225,19 @@
                   }
                })
                this.nextStep();
+            },
+            send: function () {
+               let data = {
+                  name: this.form.name,
+                  message: $('#message').val()
+               }
+               socket.emit('toGeorge', JSON.stringify(data));
+               $('#message').val("");
+               this.messages.push(data);
+               $('.messages').animate({ scrollTop: 100000 }, 1000);
+            },
+            toggleModal: function () {
+               this.talking = !this.talking;
             }
          },
       })

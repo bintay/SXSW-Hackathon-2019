@@ -10,13 +10,19 @@ var fs = require('fs');
 var bodyParser = require('body-parser');
 var expressFile = require('express-fileupload');
 const uuid = require('uuid/v1');
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
 
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressFile());
 
 app.get('/', function (req, res) {
-   res.sendfile(__dirname + '/view/index.html');
+   res.sendFile(__dirname + '/view/index.html');
+});
+
+app.get('/message', function (req, res) {
+   res.sendFile(__dirname + '/view/message.html');
 });
 
 app.post('/submit/:name/:email/', type, function (req, res) {
@@ -40,7 +46,30 @@ app.post('/submit/:name/:email/', type, function (req, res) {
    });
 });
 
-app.listen(PORT, function () {
+io.on('connection', function (socket) {
+   console.log('connected' + new Date());
+   socket.on('toUser', function (data) {
+      data = JSON.parse(data);
+      getTranslation(data.message, 'en', function (translated) {
+         io.emit('toUser', JSON.stringify({
+            name: data.name,
+            message: translated
+         }));
+      });
+   });
+
+   socket.on('toGeorge', function (data) {
+      data = JSON.parse(data);
+      getTranslation(data.message, 'es', function (translated) {
+         io.emit('toGeorge', JSON.stringify({
+            name: data.name,
+            message: translated
+         }));
+      });
+   });
+});
+
+server.listen(PORT, function () {
    console.log(`Listening on port ${PORT}`);
 });
 
