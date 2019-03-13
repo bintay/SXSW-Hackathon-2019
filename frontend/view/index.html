@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>SXSWHack</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta charset="utf8">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+   <link rel="stylesheet" href="/public/main.css">
+   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+   <header class="header">
+      <div class="hero is-danger is-bold">
+         <div class="hero-body">
+            <div class="container">
+               <h1 class="title has-text-centered">SXSWHack 2019</h1>
+               <h2 class="subtitle has-text-centered">Bringing the future to music</h2>
+            </div>
+         </div>
+      </div>
+   </header>
+   <div id="app">
+      <section class="section">
+         <div class="container">
+            <div class="column is-4 is-center">
+               <h2 class="title">Step One</h2>
+               <h3 class="subtitle">Upload an audio file of your music</h3>
+               <form action="/submit/" method="POST" encType="multipart/form-data">
+                  <label for="name" class="label">Name</label>
+                  <input class="input" type="text" placeholder="Name" id="name" name="name"><br><br>
+                  <label for="email" class="label">Email</label>
+                  <input class="input" type="email" placeholder="email@example.com" id="email" name="email"><br><br>
+                  <div class="file is-boxed is-fullwidth">
+                     <label class="file-label">
+                        <input class="file-input" type="file" name="file" id="file">
+                        <span class="file-cta">
+                           <span class="file-icon">
+                              <i class="fas fa-upload"></i>
+                           </span>
+                           <span class="file-label has-text-centered">
+                              Choose a file…
+                           </span>
+                        </span>
+                     </label>
+                  </div>
+                  <br>
+                  <input type='submit' class="button is-danger is-fullwidth" value="Get Feedback">
+               </form>
+            </div>
+         </div>
+      </section>
+      <section class="section">
+         <div class="container">
+            <div class="column is-4 is-center">
+               <h2 class="title">Step Two</h2>
+               <h3 class="subtitle">Give us some time, we're listening to specific instruments and comparing them with over eighty thousand songs to bring you marketing tips and collaboration suggestions</h3>
+            </div>
+         </div>
+      </section>
+      <section class="section">
+         <div class="container">
+            <div class="column is-4 is-center">
+               <h2 class="title">Step Three</h2>
+               <h3 class="subtitle">Here are your suggested strategies and markets</h3>
+            </div>
+         </div>
+      </section>
+      <section class="section">
+         <div class="container">
+            <div class="column is-4 is-center">
+               <h2 class="title">Step Four</h2>
+               <h3 class="subtitle">Try collaborating with people across the world — these people produce music similar to yours</h3>
+            </div>
+            <br>
+            <div class="horizontal-container">
+               <div class="users">
+                  <div class="card user" v-for="user in recommendedUsers">
+                     <div class="card-content">
+                        <p class="title">
+                           <img :src=user.image class='profile-icon'> {{ user.name }} {{ user.flag }}
+                        </p>
+                        <p class="subtitle profile-description">
+                           {{ user.bio }}
+                        </p>
+                     </div>
+                     <footer class="card-footer">
+                        <p class="card-footer-item">
+                           <span>
+                              Send a <a href="#">message</a>
+                           </span>
+                        </p>
+                        <p class="card-footer-item">
+                           <span>
+                              Add to <a href="#">Miro</a>
+                           </span>
+                        </p>
+                     </footer>
+                  </div>
+                  <h2 class="title"><br><br><br><br>That's all we have for now!</h2>
+               </div>
+            </div>
+            <div class="fade-overlay-left"></div>
+            <div class="fade-overlay-right"></div>
+         </div>
+      </section>
+   </div>
+   <script>
+      var app = new Vue({
+         el: '#app',
+         data: {
+            recommendedUsers: [
+               {
+                  image: "https://zblogged.com/wp-content/uploads/2015/11/5.png",
+                  name: "George Levine",
+                  flag: "🇯🇵",
+                  bio: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible."
+               },
+               {
+                  image: "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTU0OTkwNDUxOTQ5MDUzNDQ3/kanye-west-attends-the-christian-dior-show-as-part-of-the-paris-fashion-week-womenswear-fall-winter-2015-2016-on-march-6-2015-in-paris-france-photo-by-dominique-charriau-wireimage-square.jpg",
+                  name: "Kanye West",
+                  flag: "🇯🇵",
+                  bio: "I'm a Grammy Award-winning rapper and record producer and fashion designer. Outspoken and prone to controversy, I became additional celebrity fodder with his marriage to Kim Kardashian."
+               }
+            ]
+         },
+         methods: {
+            
+         }
+      })
+   </script>
+</body>
+</html>

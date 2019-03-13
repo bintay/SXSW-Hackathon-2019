@@ -1,0 +1,54 @@
+.is-center {
+   margin: 0 auto;
+}
+
+.card.user {
+   width: 400px;
+   float: left;
+   margin-right: 50px;
+   display: inline-block;
+}
+
+.horizontal-container {
+   overflow-x: scroll;
+   height: 500px;
+}
+
+.users {
+   width: 10000px;
+   padding: 20px 100px;
+}
+
+.users::after {
+   content: "";
+   display: block;
+   clear: both;
+}
+
+.fade-overlay-left {
+   position: absolute;
+   height: 500px;
+   margin-top: -500px;
+   width: 100px;
+   background: linear-gradient(to right, #ffffff 0%,#ffffff00 100%);
+}
+
+.fade-overlay-right {
+   position: absolute;
+   height: 500px;
+   right: 0;
+   margin-top: -500px;
+   width: 100px;
+   background: linear-gradient(to left, #ffffff 0%,#ffffff00 100%);
+}
+
+.profile-icon {
+   border-radius: 50%;
+   width: 80px;
+   line-height: 80px;
+   vertical-align: middle;
+}
+
+.profile-description {
+   padding: 10px 0;
+}
