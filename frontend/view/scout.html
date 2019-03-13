@@ -35,10 +35,10 @@
                </tr>
             </thead>
             <tbody>
-               <tr v-for='user in users.sort((a, b) => { return a.score - b.score; })'>
+               <tr v-for='user in users.sort((a, b) => { return b.Score - a.Score; })'>
                   <td>{{ user['Band Name'] }}</td>
                   <td>{{ user.collaboration }}</td>
-                  <td>{{ Math.floor(user.Score * 100) / 10 }}</td>
+                  <td>{{ Math.floor((user.Score > 10 ? user.Score / 10 : user.Score) * 100) / 10 }}</td>
                   <td><a class="button is-link">Play</a></td>
                   <td><a class="button is-success">Send Email</a></td>
                   <td><a class="button is-danger">Ignore</a></td>

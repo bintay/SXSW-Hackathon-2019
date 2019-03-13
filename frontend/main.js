@@ -111,7 +111,7 @@ function getFeedback (fileurl, callback) {
       body = JSON.parse(body);
       let result = {};
       result.score = body[1];
-      result.tips = ['market on Spotify in Mexico'];
+      result.tips = ['marketing with Spotify in Mexico'];
       callback(result.tips, result.score * 0.973);
    });
 }
